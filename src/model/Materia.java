@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author marc
  */
-public class Materia {
+public class Materia implements Comparable{
     
     private String nom;
     private ArrayList<Alumne> alumnes;
@@ -47,6 +47,11 @@ public class Materia {
 
     public void setAlumnes(ArrayList<Alumne> alumnes) {
         this.alumnes = alumnes;
+    }
+
+    @Override
+    public int compareTo(Object t) {
+        return 0;
     }
     
     

@@ -20,6 +20,9 @@ public class CatalegMateries {
         this.llistaMateries = llistaMateries;
     }
 
+    public CatalegMateries() {
+    }
+
     public TreeSet<Materia> getLlistaMateries() {
         return llistaMateries;
     }

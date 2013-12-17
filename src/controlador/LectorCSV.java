@@ -11,8 +11,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeSet;
+import model.Alumne;
+import model.CatalegMateries;
+import model.Materia;
 
 /**
  *
@@ -21,6 +25,7 @@ import java.util.logging.Logger;
 public class LectorCSV {
     
     private static File cvs;
+    private CatalegMateries cataleg;
     
     public LectorCSV(File cvs){
         this.cvs = cvs;
@@ -34,29 +39,53 @@ public class LectorCSV {
         this.cvs = cvs;
     }
     
-    public static void main(String[] args){
+    public CatalegMateries obtenirInformacioCSV(){
+        // Crear el cataleg de materies
+        CatalegMateries cataleg = new CatalegMateries();
+        TreeSet<Materia> setMateries = new TreeSet<Materia>();
         try {
             // Llegir l'arxiu
             BufferedReader inputStream = new BufferedReader(new FileReader("/home/marc/NetBeansProjects/matriculats.csv"));
             
-            String linea;
+            String linea, cognomsNom, curs, llistaMateries;
             while((linea = inputStream.readLine()) != null){
                 String[] sepCometes = linea.split("\"");
-                System.out.println(sepCometes[1]); // CognomsNom
-                System.out.println(sepCometes[3]); // Curs
+                cognomsNom = sepCometes[1];
+                curs = sepCometes[3];
+                llistaMateries = sepCometes[5];
+
+                String[] materia = llistaMateries.split(",");
                 
-                System.out.println(sepCometes[5]); // Materies
-                String[] materies = sepCometes[5].split(",");
-                for(int i = 0; i < materies.length ; i++){
-                    System.out.println(materies[i]);
+                for(int i = 0; i < materia.length ; i++){
+                    Materia m = new Materia(materia[i], new ArrayList<Alumne>());
+                    m.getAlumnes().add(new Alumne(cognomsNom, curs));
+                    
+                    setMateries.add(m);
+                    System.out.println(i);
                 }                
-                
+                 cataleg.setLlistaMateries(setMateries);
             }
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(LectorCSV.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getMessage());
         } catch (IOException ex) {
-            Logger.getLogger(LectorCSV.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getMessage());
+        }
+        
+        return cataleg;
+    }
+    
+    
+    
+    public static void main(String[] args){
+        LectorCSV csv = new LectorCSV(cvs);
+        
+        CatalegMateries cataleg = csv.obtenirInformacioCSV();
+        
+        Iterator<Materia> it = cataleg.getLlistaMateries().iterator();
+        
+        while(it.hasNext()){
+            System.out.println(it.next().getNom());
         }
     }
      
