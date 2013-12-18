@@ -7,16 +7,12 @@
 package controlador;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.ListModel;
 import model.Alumne;
-import model.LlistatAlumnes;
 
 /**
  *
@@ -43,6 +39,9 @@ public class LectorCSV {
         ArrayList<Alumne> llistatAlumnes = new ArrayList<Alumne>();
         ArrayList<String> materies = new ArrayList<>();
         String linea, cognomsNom, curs, llistaMateries;
+        DefaultListModel llistaElements = new DefaultListModel();
+        
+        // Cadena que comprovara la validesa del document
         
         try {
             // Llegir l'arxiu
@@ -60,7 +59,7 @@ public class LectorCSV {
                 for(int i = 0; i < materia.length ; i++){
                     materies.add(materia[i]);
                     // Afegir a la llista
-                    
+                    omplirJList(llistaElements, materia[i]);
                 }                
                 
                 // Afegir l'alumne a la llista
@@ -90,6 +89,14 @@ public class LectorCSV {
         return llista;
     }
 
-   
-     
+    private void omplirJList(DefaultListModel llistaElements, String materia) {
+        
+        for(int i = 0; i < llistaElements.getSize(); i++){
+            if(llistaElements.getElementAt(i).equals(materia)) {
+                System.out.println();
+            }
+        }
+        
+    }
+    
 }
