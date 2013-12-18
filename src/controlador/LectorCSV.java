@@ -12,11 +12,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.TreeSet;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListModel;
 import model.Alumne;
-import model.CatalegMateries;
-import model.Materia;
+import model.LlistatAlumnes;
 
 /**
  *
@@ -24,31 +24,32 @@ import model.Materia;
  */
 public class LectorCSV {
     
-    private static File cvs;
-    private CatalegMateries cataleg;
+    private String rutaArxiu;
     
-    public LectorCSV(File cvs){
-        this.cvs = cvs;
+    public LectorCSV(String rutaArxiu){
+        this.rutaArxiu = rutaArxiu;
     }
 
-    public File getCvs() {
-        return cvs;
+    public String getRutaArxiu() {
+        return rutaArxiu;
     }
 
-    public void setCvs(File cvs) {
-        this.cvs = cvs;
+    public void setRutaArxiu(String rutaArxiu) {
+        this.rutaArxiu = rutaArxiu;
     }
     
-    public CatalegMateries obtenirInformacioCSV(){
-        // Crear el cataleg de materies
-        CatalegMateries cataleg = new CatalegMateries();
-        TreeSet<Materia> setMateries = new TreeSet<Materia>();
+    public ArrayList<Alumne> obtenirInformacioCSV(){
+        // Crear les llistes necessaries
+        ArrayList<Alumne> llistatAlumnes = new ArrayList<Alumne>();
+        ArrayList<String> materies = new ArrayList<>();
+        String linea, cognomsNom, curs, llistaMateries;
+        
         try {
             // Llegir l'arxiu
-            BufferedReader inputStream = new BufferedReader(new FileReader("/home/marc/NetBeansProjects/matriculats.csv"));
+            BufferedReader buffer = new BufferedReader(new FileReader(rutaArxiu));
             
-            String linea, cognomsNom, curs, llistaMateries;
-            while((linea = inputStream.readLine()) != null){
+            while((linea = buffer.readLine()) != null){
+                // Extreure informació
                 String[] sepCometes = linea.split("\"");
                 cognomsNom = sepCometes[1];
                 curs = sepCometes[3];
@@ -57,14 +58,15 @@ public class LectorCSV {
                 String[] materia = llistaMateries.split(",");
                 
                 for(int i = 0; i < materia.length ; i++){
-                    Materia m = new Materia(materia[i], new ArrayList<Alumne>());
-                    m.getAlumnes().add(new Alumne(cognomsNom, curs));
+                    materies.add(materia[i]);
+                    // Afegir a la llista
                     
-                    setMateries.add(m);
-                    System.out.println(i);
                 }                
-                 cataleg.setLlistaMateries(setMateries);
+                
+                // Afegir l'alumne a la llista
+                llistatAlumnes.add(new Alumne(cognomsNom, curs, materies));
             }
+                        
             
         } catch (FileNotFoundException ex) {
             System.err.println(ex.getMessage());
@@ -72,21 +74,22 @@ public class LectorCSV {
             System.err.println(ex.getMessage());
         }
         
-        return cataleg;
+        return llistatAlumnes;
     }
-    
-    
-    
-    public static void main(String[] args){
-        LectorCSV csv = new LectorCSV(cvs);
+
+    private DefaultListModel crearModelLlista(DefaultListModel llista, String materia) {
         
-        CatalegMateries cataleg = csv.obtenirInformacioCSV();
+        for(int i = 0; i < llista.getSize(); i++){
+            if(!llista.getElementAt(i).toString().equals(materia)){
+                llista.addElement(materia);
+            }
+            llista.add(i, llista);
+            System.out.println(llista.getSize());
+        }        
         
-        Iterator<Materia> it = cataleg.getLlistaMateries().iterator();
-        
-        while(it.hasNext()){
-            System.out.println(it.next().getNom());
-        }
+        return llista;
     }
+
+   
      
 }

@@ -6,6 +6,8 @@
 
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author marc
@@ -13,10 +15,12 @@ package model;
 public class Alumne {
     
     private String cognomsNom, grup;
+    private ArrayList<String> materies;
     
-    public Alumne(String cognomsNom, String grup) {
+    public Alumne(String cognomsNom, String grup, ArrayList<String> materies) {
         this.cognomsNom = cognomsNom;
         this.grup = grup;
+        this.materies = materies;
     }
 
     public String getCognomsNom() {
@@ -33,6 +37,14 @@ public class Alumne {
 
     public void setGrup(String grup) {
         this.grup = grup;
+    }
+
+    public ArrayList<String> getMateries() {
+        return materies;
+    }
+
+    public void setMateries(ArrayList<String> materies) {
+        this.materies = materies;
     }
     
     

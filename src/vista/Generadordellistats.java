@@ -1,9 +1,13 @@
 package vista;
 
 
+import controlador.LectorCSV;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import model.Alumne;
+import model.LlistatAlumnes;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +24,8 @@ public class Generadordellistats extends javax.swing.JFrame {
     /**
      * Creates new form Prova
      */
+    private static LlistatAlumnes llistatAlumnes;
+    
     public Generadordellistats() {
         initComponents();
     }
@@ -35,6 +41,8 @@ public class Generadordellistats extends javax.swing.JFrame {
 
         jFileChooser1 = new javax.swing.JFileChooser();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Generador de llistats");
@@ -46,21 +54,32 @@ public class Generadordellistats extends javax.swing.JFrame {
             }
         });
 
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(372, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(53, 53, 53))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addComponent(jButton1)
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
 
         pack();
@@ -70,19 +89,16 @@ public class Generadordellistats extends javax.swing.JFrame {
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
         int seleccion = fileChooser.showOpenDialog(this);
+        
         if(seleccion==JFileChooser.APPROVE_OPTION){
             System.out.println(fileChooser.getSelectedFile().getName());
             if(!fileChooser.getSelectedFile().getName().endsWith(".csv")){
             JOptionPane.showMessageDialog(this, "No has obert un fitxer .cvs", "Fitxer erroni", JOptionPane.OK_OPTION);
         }
+            
         }else{
             JOptionPane.showMessageDialog(this, "Fitxer no vàlid", "Error de lectura", JOptionPane.OK_OPTION);
         }
-        
-       
-         
-        
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -116,6 +132,9 @@ public class Generadordellistats extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Generadordellistats().setVisible(true);
+                LectorCSV csv = new LectorCSV("/home/marc/NetBeansProjects/matriculats.csv");
+                
+                LlistatAlumnes llistatAlumnes = new LlistatAlumnes(csv.obtenirInformacioCSV());
             }
         });
     }
@@ -123,5 +142,7 @@ public class Generadordellistats extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JFileChooser jFileChooser1;
+    private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
