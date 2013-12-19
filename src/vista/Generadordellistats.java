@@ -2,8 +2,12 @@ package vista;
 
 
 import controlador.LectorCSV;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import model.Alumne;
@@ -41,7 +45,7 @@ public class Generadordellistats extends javax.swing.JFrame {
         jFileChooser1 = new javax.swing.JFileChooser();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        Llistamateries = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Generador de llistats");
@@ -53,12 +57,12 @@ public class Generadordellistats extends javax.swing.JFrame {
             }
         });
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
+        Llistamateries.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(Llistamateries);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -99,8 +103,27 @@ public class Generadordellistats extends javax.swing.JFrame {
             } else {
                 LectorCSV f = new LectorCSV(fileChooser.getSelectedFile().getAbsolutePath());
                 TreeMap<String, TreeSet<Alumne>> materies = f.obtenirInformacioCSV();
+                // Comprovar que el CSV sigui el correcte
+                if(materies != null){
+                    //Recorrer cada materia i assignarla a un element de la llista
+                    Set<Map.Entry<String, TreeSet<Alumne>>> clauValor =  materies.entrySet();
+                    Iterator<Map.Entry<String, TreeSet<Alumne>>> it = clauValor.iterator();
+
+                    Map.Entry<String, TreeSet<Alumne>> entrada;
+                    DefaultListModel model = new DefaultListModel();
+
+                     while(it.hasNext()){
+                        entrada = it.next();
+                        model.addElement(entrada.getKey());
+                     }
+                       Llistamateries.setModel(model);
+                } else{
+                    JOptionPane.showMessageDialog(this, "No es el fitxer que s'esperava", "Fitxer equivocat", JOptionPane.ERROR_MESSAGE);
+                }
                 
             }
+                
+                
             
         }else{
             JOptionPane.showMessageDialog(this, "Fitxer no vàlid", "Error de lectura", JOptionPane.OK_OPTION);
@@ -143,9 +166,9 @@ public class Generadordellistats extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList Llistamateries;
     private javax.swing.JButton jButton1;
     private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
