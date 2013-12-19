@@ -6,21 +6,17 @@
 
 package model;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author marc
  */
-public class Alumne {
+public class Alumne implements Comparable<Alumne>{
     
     private String cognomsNom, grup;
-    private ArrayList<String> materies;
     
-    public Alumne(String cognomsNom, String grup, ArrayList<String> materies) {
+    public Alumne(String cognomsNom, String grup) {
         this.cognomsNom = cognomsNom;
         this.grup = grup;
-        this.materies = materies;
     }
 
     public String getCognomsNom() {
@@ -39,14 +35,14 @@ public class Alumne {
         this.grup = grup;
     }
 
-    public ArrayList<String> getMateries() {
-        return materies;
-    }
-
-    public void setMateries(ArrayList<String> materies) {
-        this.materies = materies;
+    @Override
+    public int compareTo(Alumne t) {
+        return cognomsNom.compareTo(t.getCognomsNom());
     }
     
-    
+    @Override
+    public String toString(){
+        return "COGNOMS, NOM: " + cognomsNom + " - GRUP: " + grup;
+    }
     
 }

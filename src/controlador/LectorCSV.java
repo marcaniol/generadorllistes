@@ -11,12 +11,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import javax.swing.DefaultListModel;
 import model.Alumne;
 
 /**
  *
- * @author marc
+ * @author marc i aniol
  */
 public class LectorCSV {
     
@@ -34,11 +39,10 @@ public class LectorCSV {
         this.rutaArxiu = rutaArxiu;
     }
     
-    public ArrayList<Alumne> obtenirInformacioCSV(){
+    public TreeMap<String, TreeSet<Alumne>> obtenirInformacioCSV(){
         // Crear les llistes necessaries
-        ArrayList<Alumne> llistatAlumnes = new ArrayList<Alumne>();
-        ArrayList<String> materies = new ArrayList<>();
-        String linea, cognomsNom, curs, llistaMateries;
+        TreeMap<String, TreeSet<Alumne>>  materies = new TreeMap<String, TreeSet<Alumne>>();
+        String linea, cognomsNom, grup, llistaMateries;
         DefaultListModel llistaElements = new DefaultListModel();
         
         // Cadena que comprovara la validesa del document
@@ -51,19 +55,23 @@ public class LectorCSV {
                 // Extreure informació
                 String[] sepCometes = linea.split("\"");
                 cognomsNom = sepCometes[1];
-                curs = sepCometes[3];
+                grup = sepCometes[3];
                 llistaMateries = sepCometes[5];
 
                 String[] materia = llistaMateries.split(",");
                 
+                // Iterar materies
                 for(int i = 0; i < materia.length ; i++){
-                    materies.add(materia[i]);
-                    // Afegir a la llista
-                    omplirJList(llistaElements, materia[i]);
-                }                
-                
-                // Afegir l'alumne a la llista
-                llistatAlumnes.add(new Alumne(cognomsNom, curs, materies));
+                    
+                    // Comprovar si la materia existeix a la collecció
+                    if(materies.containsKey(materia[i])){
+                        materies.get(materia[i]).add(new Alumne(cognomsNom, grup));
+                    } else {
+                        TreeSet<Alumne> alumnes = new TreeSet<Alumne>();
+                        alumnes.add(new Alumne(cognomsNom, grup));
+                        materies.put(materia[i], alumnes);
+                    }
+                }
             }
                         
             
@@ -73,7 +81,9 @@ public class LectorCSV {
             System.err.println(ex.getMessage());
         }
         
-        return llistatAlumnes;
+        
+        mostrar(materies);
+        return materies;
     }
 
     private DefaultListModel crearModelLlista(DefaultListModel llista, String materia) {
@@ -89,14 +99,24 @@ public class LectorCSV {
         return llista;
     }
 
-    private void omplirJList(DefaultListModel llistaElements, String materia) {
+    private void mostrar(TreeMap<String, TreeSet<Alumne>> materies) {
+        Set<Entry<String, TreeSet<Alumne>>> clauValor =  materies.entrySet();
+	Iterator<Entry<String, TreeSet<Alumne>>> it = clauValor.iterator();
         
-        for(int i = 0; i < llistaElements.getSize(); i++){
-            if(llistaElements.getElementAt(i).equals(materia)) {
-                System.out.println();
+        Entry<String, TreeSet<Alumne>> entrada;
+        
+        while(it.hasNext()){
+            entrada = it.next();
+            
+            System.out.println("MATERIA: " + entrada.getKey());
+            System.out.println("ALUMNES: ");
+            
+            Iterator<Alumne> it2 = entrada.getValue().iterator();
+            
+            while(it2.hasNext()){
+                System.out.println(it2.next().toString());
             }
         }
-        
     }
     
 }

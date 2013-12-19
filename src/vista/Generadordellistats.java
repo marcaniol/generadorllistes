@@ -7,7 +7,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Alumne;
-import model.LlistatAlumnes;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,7 +23,7 @@ public class Generadordellistats extends javax.swing.JFrame {
     /**
      * Creates new form Prova
      */
-    private static LlistatAlumnes llistatAlumnes;
+    
     
     public Generadordellistats() {
         initComponents();
@@ -134,7 +133,7 @@ public class Generadordellistats extends javax.swing.JFrame {
                 new Generadordellistats().setVisible(true);
                 LectorCSV csv = new LectorCSV("/home/marc/NetBeansProjects/matriculats.csv");
                 
-                LlistatAlumnes llistatAlumnes = new LlistatAlumnes(csv.obtenirInformacioCSV());
+                csv.obtenirInformacioCSV();
             }
         });
     }
