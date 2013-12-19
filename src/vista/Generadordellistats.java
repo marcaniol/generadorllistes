@@ -2,12 +2,10 @@ package vista;
 
 
 import controlador.LectorCSV;
-import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Alumne;
 
 /*
