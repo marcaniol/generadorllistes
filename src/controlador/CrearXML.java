@@ -8,7 +8,12 @@ package controlador;
 
 import java.util.TreeMap;
 import java.util.TreeSet;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import model.Alumne;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  *
@@ -48,9 +53,35 @@ public class CrearXML {
     }
 
     public void setMateriesSeleccionades(String[] materiesSeleccionades) {
-        this.materiesSeleccionades = materiesSeleccionades;
+        this.setMateriesSeleccionades(materiesSeleccionades);
     }
     
-    
+    public void generarArxiu(String nomArxiu){
+        try {
+            // Crear el document
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            
+            // Crear l'element arrel
+            Element root = doc.createElement("llistes");
+            
+            // Iterar per les materies seleccionades
+            for(int i = 0; i < materiesSeleccionades.length ; i++){
+                Element materia = doc.createElement("llista");
+                
+                materia.setAttribute("materia", materiesSeleccionades[i]);
+                
+                // Iterar pel alumnes de la materia
+                
+            }
+            
+            
+            
+            // Crear 
+        } catch (ParserConfigurationException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }   
     
 }
