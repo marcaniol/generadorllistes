@@ -10,12 +10,13 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.DefaultListModel;
 import model.Alumne;
 
@@ -43,35 +44,45 @@ public class LectorCSV {
         // Crear les llistes necessaries
         TreeMap<String, TreeSet<Alumne>>  materies = new TreeMap<String, TreeSet<Alumne>>();
         String linea, cognomsNom, grup, llistaMateries;
-        DefaultListModel llistaElements = new DefaultListModel();
-        
+        boolean bo = false;
         // Cadena que comprovara la validesa del document
+        String capcalera = " #,\"00_NOM\",\"01_GRUPSCLASSE\",\"02_MATRICULADES\"";
         
         try {
             // Llegir l'arxiu
             BufferedReader buffer = new BufferedReader(new FileReader(rutaArxiu));
             
-            while((linea = buffer.readLine()) != null){
-                // Extreure informació
-                String[] sepCometes = linea.split("\"");
-                cognomsNom = sepCometes[1];
-                grup = sepCometes[3];
-                llistaMateries = sepCometes[5];
+            
+            linea = buffer.readLine();
+            
+            if(linea.equals(capcalera)){
+                bo = true;
+            }
+            
+            while((linea = buffer.readLine()) != null && bo){  
+                // Obiar les lineas en blanc
+                if(!linea.equals("")){
+                    String[] sepCometes = linea.split("\"");
+                    cognomsNom = sepCometes[1];
+                    grup = sepCometes[3];
+                    llistaMateries = sepCometes[5];
 
-                String[] materia = llistaMateries.split(",");
-                
-                // Iterar materies
-                for(int i = 0; i < materia.length ; i++){
-                    
-                    // Comprovar si la materia existeix a la collecció
-                    if(materies.containsKey(materia[i])){
-                        materies.get(materia[i]).add(new Alumne(cognomsNom, grup));
-                    } else {
-                        TreeSet<Alumne> alumnes = new TreeSet<Alumne>();
-                        alumnes.add(new Alumne(cognomsNom, grup));
-                        materies.put(materia[i], alumnes);
+                    String[] materia = llistaMateries.split(",");
+
+                    // Iterar materies
+                    for(int i = 0; i < materia.length ; i++){
+
+                        // Comprovar si la materia existeix a la collecció
+                        if(materies.containsKey(materia[i])){
+                            materies.get(materia[i]).add(new Alumne(cognomsNom, grup));
+                        } else {
+                            TreeSet<Alumne> alumnes = new TreeSet<Alumne>();
+                            alumnes.add(new Alumne(cognomsNom, grup));
+                            materies.put(materia[i], alumnes);
+                        }
                     }
                 }
+                
             }
                         
             
@@ -83,21 +94,14 @@ public class LectorCSV {
         
         
         mostrar(materies);
-        return materies;
+        if(bo){
+            return materies;
+        } else {
+            return null;
+        }
+        
     }
 
-    private DefaultListModel crearModelLlista(DefaultListModel llista, String materia) {
-        
-        for(int i = 0; i < llista.getSize(); i++){
-            if(!llista.getElementAt(i).toString().equals(materia)){
-                llista.addElement(materia);
-            }
-            llista.add(i, llista);
-            System.out.println(llista.getSize());
-        }        
-        
-        return llista;
-    }
 
     private void mostrar(TreeMap<String, TreeSet<Alumne>> materies) {
         Set<Entry<String, TreeSet<Alumne>>> clauValor =  materies.entrySet();
