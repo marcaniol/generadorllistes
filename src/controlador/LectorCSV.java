@@ -15,9 +15,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.swing.DefaultListModel;
 import model.Alumne;
 
 /**
@@ -66,7 +63,6 @@ public class LectorCSV {
                     cognomsNom = sepCometes[1];
                     grup = sepCometes[3];
                     llistaMateries = sepCometes[5];
-
                     String[] materia = llistaMateries.split(",");
 
                     // Iterar materies
@@ -95,6 +91,7 @@ public class LectorCSV {
         
         mostrar(materies);
         if(bo){
+            System.out.println(materies.size());
             return materies;
         } else {
             return null;

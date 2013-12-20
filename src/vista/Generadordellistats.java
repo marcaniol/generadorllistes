@@ -1,8 +1,10 @@
 package vista;
 
 
+import controlador.CrearXML;
 import controlador.LectorCSV;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -23,7 +25,9 @@ import model.Alumne;
  * @author acoromina
  */
 public class Generadordellistats extends javax.swing.JFrame {
-
+    
+    private TreeMap<String, TreeSet<Alumne>> ttsMateries;
+    
     /**
      * Creates new form Prova
      */
@@ -46,6 +50,7 @@ public class Generadordellistats extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Llistamateries = new javax.swing.JList();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Generador de llistats");
@@ -64,6 +69,13 @@ public class Generadordellistats extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(Llistamateries);
 
+        jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -75,6 +87,8 @@ public class Generadordellistats extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(85, 85, 85)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71)
+                .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -82,8 +96,13 @@ public class Generadordellistats extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addComponent(jButton1)
-                .addGap(22, 22, 22)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(74, 74, 74)
+                        .addComponent(jButton2)))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
 
@@ -102,11 +121,11 @@ public class Generadordellistats extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No has obert un fitxer .cvs", "Fitxer erroni", JOptionPane.OK_OPTION);
             } else {
                 LectorCSV f = new LectorCSV(fileChooser.getSelectedFile().getAbsolutePath());
-                TreeMap<String, TreeSet<Alumne>> materies = f.obtenirInformacioCSV();
+                ttsMateries = f.obtenirInformacioCSV();
                 // Comprovar que el CSV sigui el correcte
-                if(materies != null){
+                if(ttsMateries != null){
                     //Recorrer cada materia i assignarla a un element de la llista
-                    Set<Map.Entry<String, TreeSet<Alumne>>> clauValor =  materies.entrySet();
+                    Set<Map.Entry<String, TreeSet<Alumne>>> clauValor =  ttsMateries.entrySet();
                     Iterator<Map.Entry<String, TreeSet<Alumne>>> it = clauValor.iterator();
 
                     Map.Entry<String, TreeSet<Alumne>> entrada;
@@ -129,6 +148,16 @@ public class Generadordellistats extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Fitxer no vàlid", "Error de lectura", JOptionPane.OK_OPTION);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        List<String> seleccionats = Llistamateries.getSelectedValuesList();
+        
+        if(new CrearXML(ttsMateries, seleccionats).generarArxiu("prova.xml")){
+            JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al generar el document XML", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,6 +197,7 @@ public class Generadordellistats extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList Llistamateries;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
