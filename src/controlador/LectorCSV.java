@@ -7,9 +7,12 @@
 package controlador;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -46,10 +49,10 @@ public class LectorCSV {
         String capcalera = " #,\"00_NOM\",\"01_GRUPSCLASSE\",\"02_MATRICULADES\"";
         
         try {
-            // Llegir l'arxiu
-            BufferedReader buffer = new BufferedReader(new FileReader(rutaArxiu));
+            // Llegir l'arxiu            
+            File file = new File(rutaArxiu);
             
-            
+            BufferedReader buffer  = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-15"));
             linea = buffer.readLine();
             
             if(linea.equals(capcalera)){
