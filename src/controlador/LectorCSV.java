@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
@@ -29,14 +28,6 @@ public class LectorCSV {
     private String rutaArxiu;
     
     public LectorCSV(String rutaArxiu){
-        this.rutaArxiu = rutaArxiu;
-    }
-
-    public String getRutaArxiu() {
-        return rutaArxiu;
-    }
-
-    public void setRutaArxiu(String rutaArxiu) {
         this.rutaArxiu = rutaArxiu;
     }
     
@@ -81,20 +72,15 @@ public class LectorCSV {
                         }
                     }
                 }
-                
             }
-                        
-            
+                  
         } catch (FileNotFoundException ex) {
             System.err.println(ex.getMessage());
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
         
-        
-        mostrar(materies);
         if(bo){
-            System.out.println(materies.size());
             return materies;
         } else {
             return null;
@@ -102,25 +88,36 @@ public class LectorCSV {
         
     }
 
+    /**
+     * Mètode que permet mostrar el contingut del CSV en la consola
+     * @param materies 
+     * @return  Contingut del CSV
+     */
+    public String mostrar(TreeMap<String, TreeSet<Alumne>> materies) {
+        String contingut = "";
+        if(materies != null){
+            
+            Set<Entry<String, TreeSet<Alumne>>> clauValor =  materies.entrySet();
+            Iterator<Entry<String, TreeSet<Alumne>>> it = clauValor.iterator();
 
-    private void mostrar(TreeMap<String, TreeSet<Alumne>> materies) {
-        Set<Entry<String, TreeSet<Alumne>>> clauValor =  materies.entrySet();
-	Iterator<Entry<String, TreeSet<Alumne>>> it = clauValor.iterator();
-        
-        Entry<String, TreeSet<Alumne>> entrada;
-        
-        while(it.hasNext()){
-            entrada = it.next();
-            
-            System.out.println("MATERIA: " + entrada.getKey());
-            System.out.println("ALUMNES: ");
-            
-            Iterator<Alumne> it2 = entrada.getValue().iterator();
-            
-            while(it2.hasNext()){
-                System.out.println(it2.next().toString());
+            Entry<String, TreeSet<Alumne>> entrada;
+
+            while(it.hasNext()){
+                entrada = it.next();
+
+                contingut += "\nMATERIA: " + entrada.getKey();
+                contingut += "\nALUMNES: ";
+
+                Iterator<Alumne> it2 = entrada.getValue().iterator();
+
+                while(it2.hasNext()){
+                    contingut += "\n" + it2.next().toString();
+                }
             }
+        } else{
+            contingut +=  "NO S'HA LLEGIT EL CSV";
         }
+        return contingut;
     }
     
 }

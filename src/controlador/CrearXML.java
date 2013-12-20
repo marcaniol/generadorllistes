@@ -78,6 +78,7 @@ public class CrearXML {
             Element root = doc.createElement("llistes");
             doc.appendChild(root);
             
+            // Iterar pels elements seleccionats
             Iterator<String> it =  seleccionats.iterator();
             
             while(it.hasNext()){
@@ -119,7 +120,6 @@ public class CrearXML {
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 transformer.setOutputProperty(OutputKeys.METHOD, "xml");
                 transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-                transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
                 transformer.transform(source, result);
                 
             } catch (TransformerConfigurationException ex) {

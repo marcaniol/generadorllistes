@@ -14,6 +14,17 @@ public class Alumne implements Comparable<Alumne>{
     
     private String cognomsNom, grup;
     
+    /**
+     * Constructor per defecte 
+     */
+    public Alumne(){
+    }
+    
+    /**
+     * Constructor amb paràmetres
+     * @param cognomsNom
+     * @param grup 
+     */
     public Alumne(String cognomsNom, String grup) {
         this.cognomsNom = cognomsNom;
         this.grup = grup;
