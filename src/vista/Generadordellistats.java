@@ -14,11 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import model.Alumne;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 /**
  *
@@ -47,29 +43,24 @@ public class Generadordellistats extends javax.swing.JFrame {
     private void initComponents() {
 
         jFileChooser1 = new javax.swing.JFileChooser();
-        jButton1 = new javax.swing.JButton();
+        btnExaminarArxiu = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Llistamateries = new javax.swing.JList();
         btnGenerarXML = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtRutaArxiu = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Generador de llistats");
 
-        jButton1.setText("Examinar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnExaminarArxiu.setText("Examinar");
+        btnExaminarArxiu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnExaminarArxiuActionPerformed(evt);
             }
         });
 
-        Llistamateries.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(Llistamateries);
 
         btnGenerarXML.setText("Generar llistes");
@@ -82,9 +73,9 @@ public class Generadordellistats extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel1.setText("Indica el fitxer que conté les dades a tractar:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtRutaArxiu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtRutaArxiuActionPerformed(evt);
             }
         });
 
@@ -98,21 +89,21 @@ public class Generadordellistats extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnGenerarXML)
+                                .addGap(23, 23, 23)))
                         .addContainerGap())
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton1)
-                            .addGap(33, 33, 33))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGenerarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(47, 47, 47)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtRutaArxiu, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExaminarArxiu, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,32 +112,32 @@ public class Generadordellistats extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnExaminarArxiu)
+                    .addComponent(txtRutaArxiu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(btnGenerarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnGenerarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnExaminarArxiuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExaminarArxiuActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
         int seleccion = fileChooser.showOpenDialog(this);
         
+        // Si la selecció de l'arxiu és correcte
         if(seleccion==JFileChooser.APPROVE_OPTION){
             System.out.println(fileChooser.getSelectedFile().getName());
-            //Es un csv?
+            txtRutaArxiu.setText(fileChooser.getSelectedFile().getName());
+            // Es un csv?
             if(!fileChooser.getSelectedFile().getName().endsWith(".csv")){
-            JOptionPane.showMessageDialog(this, "No has obert un fitxer .cvs", "Fitxer erroni", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "No has obert un fitxer .cvs", "Fitxer erroni", JOptionPane.OK_OPTION);
             } else {
                 LectorCSV csv = new LectorCSV(fileChooser.getSelectedFile().getAbsolutePath());
                 ttsMateries = csv.obtenirInformacioCSV();
@@ -155,7 +146,7 @@ public class Generadordellistats extends javax.swing.JFrame {
                     //Recorrer cada materia i assignarla a un element de la llista
                     Set<Map.Entry<String, TreeSet<Alumne>>> clauValor =  ttsMateries.entrySet();
                     Iterator<Map.Entry<String, TreeSet<Alumne>>> it = clauValor.iterator();
-
+                    
                     Map.Entry<String, TreeSet<Alumne>> entrada;
                     DefaultListModel model = new DefaultListModel();
 
@@ -169,27 +160,43 @@ public class Generadordellistats extends javax.swing.JFrame {
                 }
                 
             }
-                
-                
-            
+
         }else{
             JOptionPane.showMessageDialog(this, "Fitxer no vàlid", "Error de lectura", JOptionPane.OK_OPTION);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnExaminarArxiuActionPerformed
 
     private void btnGenerarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarXMLActionPerformed
-        List<String> seleccionats = Llistamateries.getSelectedValuesList();
+        // Demanar el nom de l'arxiu
+        String nomArxiu = JOptionPane.showInputDialog(this, "Introdueix el nom de l'arxiu", "Generació XML", JOptionPane.QUESTION_MESSAGE);
+        nomArxiu.trim();
         
-        if(new CrearXML(ttsMateries, seleccionats).generarArxiu("prova.xml")){
-            JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
+        if(!nomArxiu.equals("")){
+            // Agafar els elements seleccionats de la llista
+            List<String> seleccionats = Llistamateries.getSelectedValuesList();
+            if(nomArxiu.contains(".xml")){        
+                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(nomArxiu)){
+                    JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al generar el document XML", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                nomArxiu += ".xml";
+                 if(new CrearXML(ttsMateries, seleccionats).generarArxiu(nomArxiu)){
+                    JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al generar el document XML", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
         } else {
-            JOptionPane.showMessageDialog(this, "Error al generar el document XML", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Introdueix un nom coherent", "Error d'escriptura", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGenerarXMLActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtRutaArxiuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRutaArxiuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtRutaArxiuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -221,19 +228,21 @@ public class Generadordellistats extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Generadordellistats().setVisible(true);
+                Generadordellistats gll = new Generadordellistats();
+                gll.setLocationRelativeTo(null);
+                gll.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList Llistamateries;
+    private javax.swing.JButton btnExaminarArxiu;
     private javax.swing.JButton btnGenerarXML;
-    private javax.swing.JButton jButton1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtRutaArxiu;
     // End of variables declaration//GEN-END:variables
 }

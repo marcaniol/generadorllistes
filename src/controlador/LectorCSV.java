@@ -32,18 +32,20 @@ public class LectorCSV {
     }
     
     public TreeMap<String, TreeSet<Alumne>> obtenirInformacioCSV(){
-        // Crear les llistes necessaries
+        // Crear les col·leccions i variables necessaries per emmagatzemar la informació del CSV
         TreeMap<String, TreeSet<Alumne>>  materies = new TreeMap<String, TreeSet<Alumne>>();
         String linea, cognomsNom, grup, llistaMateries;
         boolean bo = false;
+        
         // Cadena que comprovara la validesa del document
         String capcalera = " #,\"00_NOM\",\"01_GRUPSCLASSE\",\"02_MATRICULADES\"";
         
         try {
             // Llegir l'arxiu            
             File file = new File(rutaArxiu);
-            
+            // Argumentar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             BufferedReader buffer  = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-15"));
+            // Llegir primera linea
             linea = buffer.readLine();
             
             if(linea.equals(capcalera)){
@@ -54,15 +56,15 @@ public class LectorCSV {
                 // Obiar les lineas en blanc
                 if(!linea.equals("")){
                     String[] sepCometes = linea.split("\"");
-                    cognomsNom = sepCometes[1];
-                    grup = sepCometes[3];
-                    llistaMateries = sepCometes[5];
+                    cognomsNom = sepCometes[1]; // --> CognomsNom
+                    grup = sepCometes[3]; // --> grup
+                    llistaMateries = sepCometes[5]; // --> Llista de materies
                     String[] materia = llistaMateries.split(",");
 
                     // Iterar materies
                     for(int i = 0; i < materia.length ; i++){
 
-                        // Comprovar si la materia existeix a la collecció
+                        // Comprovar si la materia existeix a la col·lecció
                         if(materies.containsKey(materia[i])){
                             materies.get(materia[i]).add(new Alumne(cognomsNom, grup));
                         } else {
@@ -89,7 +91,7 @@ public class LectorCSV {
     }
 
     /**
-     * Mètode que permet mostrar el contingut del CSV en la consola
+     * Mètode que permet mostrar el contingut llegit del CSV en la consola
      * @param materies 
      * @return  Contingut del CSV
      */

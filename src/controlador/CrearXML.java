@@ -117,6 +117,7 @@ public class CrearXML {
                 DOMSource source = new DOMSource(doc);
                 StreamResult result = new StreamResult(new File(nomArxiu));
                 
+                // Propietats de sortida, format.
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 transformer.setOutputProperty(OutputKeys.METHOD, "xml");
                 transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
