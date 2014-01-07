@@ -12,6 +12,8 @@ import java.util.TreeSet;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Alumne;
 
 
@@ -73,12 +75,6 @@ public class Generadordellistats extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel1.setText("Indica el fitxer que conté les dades a tractar:");
 
-        txtRutaArxiu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtRutaArxiuActionPerformed(evt);
-            }
-        });
-
         jLabel2.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel2.setText("Selecciona les matèries de les quals vols generar llistes:");
 
@@ -88,18 +84,18 @@ public class Generadordellistats extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnGenerarXML)
+                                .addComponent(btnGenerarXML, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(23, 23, 23)))
                         .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(txtRutaArxiu, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnExaminarArxiu, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -127,15 +123,18 @@ public class Generadordellistats extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnExaminarArxiuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExaminarArxiuActionPerformed
-        // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
+        // Implementar el filtre per arxius CSV
+        FileFilter filtro = new FileNameExtensionFilter("Fitxer separat per comes (.csv)", "csv");
+        fileChooser.setFileFilter(filtro);
         int seleccion = fileChooser.showOpenDialog(this);
         
         // Si la selecció de l'arxiu és correcte
         if(seleccion==JFileChooser.APPROVE_OPTION){
-            System.out.println(fileChooser.getSelectedFile().getName());
+            // Apuntar el nom de l'arxiu al JTextField
             txtRutaArxiu.setText(fileChooser.getSelectedFile().getName());
-            // Es un csv?
+            
+            // Comprovar que l'arxiu tingui la extensió .csv
             if(!fileChooser.getSelectedFile().getName().endsWith(".csv")){
                 JOptionPane.showMessageDialog(this, "No has obert un fitxer .cvs", "Fitxer erroni", JOptionPane.OK_OPTION);
             } else {
@@ -143,7 +142,7 @@ public class Generadordellistats extends javax.swing.JFrame {
                 ttsMateries = csv.obtenirInformacioCSV();
                 // Comprovar que el CSV sigui el correcte
                 if(ttsMateries != null){
-                    //Recorrer cada materia i assignarla a un element de la llista
+                    // Recorrer cada materia i assignar-la a un DefaultListModel
                     Set<Map.Entry<String, TreeSet<Alumne>>> clauValor =  ttsMateries.entrySet();
                     Iterator<Map.Entry<String, TreeSet<Alumne>>> it = clauValor.iterator();
                     
@@ -154,7 +153,9 @@ public class Generadordellistats extends javax.swing.JFrame {
                         entrada = it.next();
                         model.addElement(entrada.getKey());
                      }
-                       Llistamateries.setModel(model);
+                     // Instanciar el DefaultListModel a la JList (llista de materies del CSV)
+                     Llistamateries.setModel(model);
+
                 } else{
                     JOptionPane.showMessageDialog(this, "No es el fitxer que s'esperava", "Fitxer equivocat", JOptionPane.ERROR_MESSAGE);
                 }
@@ -174,7 +175,8 @@ public class Generadordellistats extends javax.swing.JFrame {
         if(!nomArxiu.equals("")){
             // Agafar els elements seleccionats de la llista
             List<String> seleccionats = Llistamateries.getSelectedValuesList();
-            if(nomArxiu.contains(".xml")){        
+            // Comprovar que l'usuari hagi escrit el ".xml" i crear l'XML
+            if(nomArxiu.contains(".xml")){  
                 if(new CrearXML(ttsMateries, seleccionats).generarArxiu(nomArxiu)){
                     JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -185,7 +187,7 @@ public class Generadordellistats extends javax.swing.JFrame {
                  if(new CrearXML(ttsMateries, seleccionats).generarArxiu(nomArxiu)){
                     JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Error al generar el document XML", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Error al generar el document XML, selecciona alguna materia", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
             
@@ -193,10 +195,6 @@ public class Generadordellistats extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Introdueix un nom coherent", "Error d'escriptura", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGenerarXMLActionPerformed
-
-    private void txtRutaArxiuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRutaArxiuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRutaArxiuActionPerformed
 
     /**
      * @param args the command line arguments

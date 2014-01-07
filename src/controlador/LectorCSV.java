@@ -42,8 +42,8 @@ public class LectorCSV {
         
         try {
             // Llegir l'arxiu            
-            File file = new File(rutaArxiu);
-            // Argumentar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            File file = new File(getRutaArxiu());
+            // Crear un buffer de lectura amb la codificació del CSV (evitar interrogants)
             BufferedReader buffer  = new BufferedReader(new InputStreamReader(new FileInputStream(file), "ISO-8859-15"));
             // Llegir primera linea
             linea = buffer.readLine();
@@ -120,6 +120,14 @@ public class LectorCSV {
             contingut +=  "NO S'HA LLEGIT EL CSV";
         }
         return contingut;
+    }
+
+    public String getRutaArxiu() {
+        return rutaArxiu;
+    }
+
+    public void setRutaArxiu(String rutaArxiu) {
+        this.rutaArxiu = rutaArxiu;
     }
     
 }
