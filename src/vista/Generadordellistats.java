@@ -4,15 +4,12 @@ package vista;
 import controlador.CrearXML;
 import controlador.LectorCSV;
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -33,7 +30,20 @@ public class Generadordellistats extends javax.swing.JFrame {
     /**
      * Creates new form Prova
      */
-    
+    private String seleccionarCarpeta(){
+        String rutaCarpeta = "";
+        
+        // Obrir un JFileChooser on només la selecció de carpeta sigui possible
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int seleccio = fileChooser.showDialog(this, "Seleccionar la carpeta");
+        
+        if(seleccio == JFileChooser.APPROVE_OPTION){
+            rutaCarpeta = fileChooser.getSelectedFile().getAbsolutePath();
+        }
+        
+        return rutaCarpeta;
+    }
     
     public Generadordellistats() {
         initComponents();
@@ -197,36 +207,37 @@ public class Generadordellistats extends javax.swing.JFrame {
                 }
                 
             }
-
         }else{
             JOptionPane.showMessageDialog(this, "Fitxer no vàlid", "Error de lectura", JOptionPane.OK_OPTION);
         }
     }//GEN-LAST:event_btnExaminarArxiuActionPerformed
 
     private void btnGenerarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarXMLActionPerformed
-        // Demanar el nom de l'arxiu
+        // Demanar la carpeta on es guardarà i el nom de l'arxiu
+        String carpeta = seleccionarCarpeta();
         String nomArxiu = JOptionPane.showInputDialog(this, "Introdueix el nom de l'arxiu", "Generació XML", JOptionPane.QUESTION_MESSAGE);
         nomArxiu.trim();
         
         if(!nomArxiu.equals("")){
             // Agafar els elements seleccionats de la llista
             List<String> seleccionats = Llistamateries.getSelectedValuesList();
+            
             // Comprovar que l'usuari hagi escrit el ".xml" i crear l'XML
             if(nomArxiu.contains(".xml")){  
-                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(nomArxiu)){
+                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(carpeta + File.separator + nomArxiu)){
                     JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al generar el document XML", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 nomArxiu += ".xml";
-                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(nomArxiu)){
+                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(carpeta + File.separator + nomArxiu)){
                     JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al generar el document XML, selecciona alguna materia", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            
+        // Tractar error d'entrada
         } else {
             JOptionPane.showMessageDialog(this, "Introdueix un nom coherent", "Error d'escriptura", JOptionPane.ERROR_MESSAGE);
         }
