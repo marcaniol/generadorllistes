@@ -107,7 +107,7 @@ public class Generadordellistats extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Serif", 1, 14)); // NOI18N
         jLabel2.setText("Selecciona les matèries de les quals vols generar llistes:");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("/home/marc/NetBeansProjects/GeneradorLlistatsXML/logo.png")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.png"))); // NOI18N
 
         jMenu1.setText("Arxiu");
 
