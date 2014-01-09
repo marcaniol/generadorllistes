@@ -3,12 +3,17 @@ package vista;
 
 import controlador.CrearXML;
 import controlador.LectorCSV;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -228,14 +233,26 @@ public class Generadordellistats extends javax.swing.JFrame {
             // Comprovar que l'usuari hagi escrit el ".xml" i crear l'XML
             if(infoRutaArxiu.contains(".xml")){  
                 if(new CrearXML(ttsMateries, seleccionats).generarArxiu(infoRutaArxiu)){
-                    JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
+                    try {
+                        JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
+                        // Obrir el programa predeterminat dels sistema operatiu
+                        Desktop.getDesktop().open(new File(infoRutaArxiu));
+                    } catch (IOException ex) {
+                        Logger.getLogger(Generadordellistats.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al generar el document XML", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 infoRutaArxiu += ".xml";
                 if(new CrearXML(ttsMateries, seleccionats).generarArxiu(infoRutaArxiu)){
-                    JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
+                    try {
+                        JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
+                        // Obrir el programa predeterminat dels sistema operatiu
+                        Desktop.getDesktop().open(new File(infoRutaArxiu));
+                    } catch (IOException ex) {
+                        Logger.getLogger(Generadordellistats.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al generar el document XML, selecciona alguna materia", "Error", JOptionPane.ERROR_MESSAGE);
                 }
