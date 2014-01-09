@@ -3,7 +3,6 @@ package vista;
 
 import controlador.CrearXML;
 import controlador.LectorCSV;
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +16,6 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Alumne;
 
-
-
 /**
  *
  * @author acoromina
@@ -30,19 +27,23 @@ public class Generadordellistats extends javax.swing.JFrame {
     /**
      * Creates new form Prova
      */
-    private String seleccionarCarpeta(){
-        String rutaCarpeta = "";
+    private String seleccionarRutaArxiu(){
+        String infoCarpeta = "";
         
         // Obrir un JFileChooser on només la selecció de carpeta sigui possible
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int seleccio = fileChooser.showDialog(this, "Seleccionar la carpeta");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int seleccio = fileChooser.showSaveDialog(this);
         
         if(seleccio == JFileChooser.APPROVE_OPTION){
-            rutaCarpeta = fileChooser.getSelectedFile().getAbsolutePath();
+            infoCarpeta = fileChooser.getSelectedFile().getAbsolutePath();
         }
         
-        return rutaCarpeta;
+        if(seleccio == JFileChooser.CANCEL_OPTION){
+            infoCarpeta = null;
+        }
+        
+        return infoCarpeta;
     }
     
     public Generadordellistats() {
@@ -85,6 +86,7 @@ public class Generadordellistats extends javax.swing.JFrame {
         jScrollPane1.setViewportView(Llistamateries);
 
         btnGenerarXML.setText("Generar llistes");
+        btnGenerarXML.setEnabled(false);
         btnGenerarXML.setPreferredSize(new java.awt.Dimension(140, 25));
         btnGenerarXML.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,7 +178,7 @@ public class Generadordellistats extends javax.swing.JFrame {
         int seleccion = fileChooser.showOpenDialog(this);
         
         // Si la selecció de l'arxiu és correcte
-        if(seleccion==JFileChooser.APPROVE_OPTION){
+        if(seleccion == JFileChooser.APPROVE_OPTION){
             // Apuntar el nom de l'arxiu al JTextField
             txtRutaArxiu.setText(fileChooser.getSelectedFile().getName());
             
@@ -201,46 +203,47 @@ public class Generadordellistats extends javax.swing.JFrame {
                      }
                      // Instanciar el DefaultListModel a la JList (llista de materies del CSV)
                      Llistamateries.setModel(model);
-
+                     btnGenerarXML.setEnabled(true);
+                     
                 } else{
                     JOptionPane.showMessageDialog(this, "No es el fitxer que s'esperava", "Fitxer equivocat", JOptionPane.ERROR_MESSAGE);
                 }
                 
             }
-        }else{
-            JOptionPane.showMessageDialog(this, "Fitxer no vàlid", "Error de lectura", JOptionPane.OK_OPTION);
+        }
+        
+        if(seleccion == JFileChooser.CANCEL_OPTION){
+            JOptionPane.showMessageDialog(this, "Acció cancel·lada", "Informació", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnExaminarArxiuActionPerformed
 
     private void btnGenerarXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarXMLActionPerformed
         // Demanar la carpeta on es guardarà i el nom de l'arxiu
-        String carpeta = seleccionarCarpeta();
-        String nomArxiu = JOptionPane.showInputDialog(this, "Introdueix el nom de l'arxiu", "Generació XML", JOptionPane.QUESTION_MESSAGE);
-        nomArxiu.trim();
+        String infoRutaArxiu = seleccionarRutaArxiu();
         
-        if(!nomArxiu.equals("")){
+        if(infoRutaArxiu != null){
             // Agafar els elements seleccionats de la llista
             List<String> seleccionats = Llistamateries.getSelectedValuesList();
-            
+            System.out.println(infoRutaArxiu);
             // Comprovar que l'usuari hagi escrit el ".xml" i crear l'XML
-            if(nomArxiu.contains(".xml")){  
-                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(carpeta + File.separator + nomArxiu)){
+            if(infoRutaArxiu.contains(".xml")){  
+                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(infoRutaArxiu)){
                     JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al generar el document XML", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                nomArxiu += ".xml";
-                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(carpeta + File.separator + nomArxiu)){
+                infoRutaArxiu += ".xml";
+                if(new CrearXML(ttsMateries, seleccionats).generarArxiu(infoRutaArxiu)){
                     JOptionPane.showMessageDialog(this, "Document XML generat correctament", "Informació", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al generar el document XML, selecciona alguna materia", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        // Tractar error d'entrada
         } else {
-            JOptionPane.showMessageDialog(this, "Introdueix un nom coherent", "Error d'escriptura", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Generació del llistat de materies cancel·lada", "Acció cancel·lada", JOptionPane.INFORMATION_MESSAGE);
         }
+            
     }//GEN-LAST:event_btnGenerarXMLActionPerformed
 
     private void MnuItemSortirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnuItemSortirActionPerformed
